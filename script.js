@@ -82,24 +82,29 @@ const editToDo = (e) => {
   toDoToEdit = e.target.closest("li");
 
   popUpInput.value = toDoToEdit.firstChild.textContent;
-  popUp.style.display = "flex";
+  popUp.classList.toggle("popup-visibility");
+};
+
+const hidePopUp = () => {
+  popUp.classList.toggle("popup-visibility");
+};
+
+const changeTaskName = () => {
+  if (popUpInput.value !== "") {
+    toDoToEdit.firstChild.textContent = popUpInput.value;
+    hidePopUp();
+    popUpInput.value = "";
+    popUpInfo.textContent = "";
+  } else popUpInfo.textContent = "Musisz podać treść zadania!";
 };
 
 const deleteToDo = (e) => {
   toDoToDelete = e.target.closest("li");
   toDoToDelete.remove();
+  if (popUp.classList.contains("popup-visibility"))
+    hidePopUp();
   if (ulList.firstChild === null)
     errorInfo.textContent = "Brak zadań na liście";
-};
-
-const hidePopUp = () => {
-  popUp.style.display = "none";
-};
-
-const changeTaskName = () => {
-  toDoToEdit.firstChild.textContent = popUpInput.value;
-  hidePopUp();
-  popUpInput.value = "";
 };
 
 const checkClick = (e) => {
