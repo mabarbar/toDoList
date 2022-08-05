@@ -33,9 +33,12 @@ const prepareDOMElements = () => {
 
 const prepareDOMEvents = () => {
   addBtn.addEventListener("click", addNewTask);
+  addBtn.addEventListener("click", addNewTask);
   ulList.addEventListener("click", checkClick);
   popUpAccept.addEventListener("click", changeTaskName);
   popUpCancel.addEventListener("click", hidePopUp);
+
+  input.addEventListener("keyup", checkEnter);
 
   // listenery
 };
@@ -101,8 +104,7 @@ const changeTaskName = () => {
 const deleteToDo = (e) => {
   toDoToDelete = e.target.closest("li");
   toDoToDelete.remove();
-  if (popUp.classList.contains("popup-visibility"))
-    hidePopUp();
+  if (popUp.classList.contains("popup-visibility")) hidePopUp();
   if (ulList.firstChild === null)
     errorInfo.textContent = "Brak zadań na liście";
 };
@@ -116,6 +118,10 @@ const checkClick = (e) => {
   } else if (e.target.matches(".delete")) {
     deleteToDo(e);
   }
+};
+
+const checkEnter = (e) => {
+  if (e.key === "Enter") addNewTask();
 };
 
 document.addEventListener("DOMContentLoaded", main);
