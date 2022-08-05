@@ -1,10 +1,15 @@
-let input, addBtn, errorInfo, ulList;
-// const completeToDo = document.querySelector(".complete");
-// const editToDo = document.querySelector(".edit");
-// const deleteToDo = document.querySelector(".delete");
+let input,
+  addBtn,
+  errorInfo,
+  ulList,
+  popUp,
+  popUpInfo,
+  toDoToEdit,
+  popUpInput,
+  popUpAccept,
+  popUpCancel;
 
 // const popUpInfo = document.querySelector(".popup-info");
-// const popUpInput = document.querySelector(".popup-input");
 // const popUpBtnAccept = document.querySelector(".popup-btn .accept");
 // const popUpBtnCancel = document.querySelector(".popup-btn .cancel");
 
@@ -18,10 +23,20 @@ const prepareDOMElements = () => {
   errorInfo = document.querySelector(".error-info");
   addBtn = document.querySelector(".btn-add");
   ulList = document.querySelector(".todolist ul");
+
+  popUp = document.querySelector(".popup");
+  popUpInfo = document.querySelector(".popup-info");
+  popUpInput = document.querySelector(".popup-input");
+  popUpAccept = document.querySelector(".popup-btn.accept");
+  popUpCancel = document.querySelector(".popup-btn.cancel");
 };
 
 const prepareDOMEvents = () => {
   addBtn.addEventListener("click", addNewTask);
+  ulList.addEventListener("click", checkClick);
+  popUpAccept.addEventListener("click", changeTaskName);
+  popUpCancel.addEventListener("click", hidePopUp);
+
   // listenery
 };
 
@@ -47,9 +62,6 @@ const createToolsArea = (newTodo) => {
   const btnComplete = document.createElement("button");
   btnComplete.classList.add("complete");
   btnComplete.innerHTML = '<i class="fas fa-check"></i>';
-  // const checkMark = document.createElement("i");
-  // checkMark.classList.add("fas", "fa-check");
-  // btnComplete.appendChild(checkMark);
 
   const btnEdit = document.createElement("button");
   btnEdit.classList.add("edit");
@@ -64,9 +76,41 @@ const createToolsArea = (newTodo) => {
 
   newTodo.appendChild(tools);
   tools.append(btnComplete, btnEdit, btnDelete);
-  // tools.appendChild(btnComplete);
-  // tools.appendChild(btnEdit);
-  // tools.appendChild(btnDelete);
+};
+
+const editToDo = (e) => {
+  toDoToEdit = e.target.closest("li");
+
+  popUpInput.value = toDoToEdit.firstChild.textContent;
+  popUp.style.display = "flex";
+};
+
+const deleteToDo = (e) => {
+  toDoToDelete = e.target.closest("li");
+  toDoToDelete.remove();
+  if (ulList.firstChild === null)
+    errorInfo.textContent = "Brak zadań na liście";
+};
+
+const hidePopUp = () => {
+  popUp.style.display = "none";
+};
+
+const changeTaskName = () => {
+  toDoToEdit.firstChild.textContent = popUpInput.value;
+  hidePopUp();
+  popUpInput.value = "";
+};
+
+const checkClick = (e) => {
+  if (e.target.matches(".complete")) {
+    e.target.closest("li").classList.toggle("completed");
+    e.target.classList.toggle("completed");
+  } else if (e.target.matches(".edit")) {
+    editToDo(e);
+  } else if (e.target.matches(".delete")) {
+    deleteToDo(e);
+  }
 };
 
 document.addEventListener("DOMContentLoaded", main);
