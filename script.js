@@ -39,6 +39,7 @@ const prepareDOMEvents = () => {
   popUpCancel.addEventListener("click", hidePopUp);
 
   input.addEventListener("keyup", checkEnter);
+  window.addEventListener("keyup", checkEscape);
 
   // listenery
 };
@@ -90,6 +91,7 @@ const editToDo = (e) => {
 
 const hidePopUp = () => {
   popUp.classList.toggle("popup-visibility");
+  popUpInput.value = "";
 };
 
 const changeTaskName = () => {
@@ -122,6 +124,10 @@ const checkClick = (e) => {
 
 const checkEnter = (e) => {
   if (e.key === "Enter") addNewTask();
+};
+
+const checkEscape = (e) => {
+  if (e.key === "Escape") hidePopUp();
 };
 
 document.addEventListener("DOMContentLoaded", main);
